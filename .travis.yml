@@ -3,6 +3,3 @@ php:
   - '7.0'
 install:
   - composer install
-env:
-  - APP_KEY=base64:N1E9M3ZCsrUe204EfMV78zw/Qnv3IxJ2WKykKBiRr6o=
-  - APP_LOG=errorlog
