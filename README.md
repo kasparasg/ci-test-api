@@ -1,3 +1,4 @@
-# CI Test API
+CI Test API
+---
 
 A dummy api for CI tests.
