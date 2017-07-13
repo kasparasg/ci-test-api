@@ -15,6 +15,7 @@ jobs:
       - image: circleci/node:4
     working_directory: ~/ci-test-api
     steps:
+      - checkout
       - run: composer install
       - run: php artisan serve
       - run: cd garden; npm install
