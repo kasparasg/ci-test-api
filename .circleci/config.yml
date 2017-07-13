@@ -14,7 +14,7 @@ jobs:
       - image: notnoopci/php:7.1.5-browsers
     working_directory: ~/ci-test-api
     steps:
-      - run: apt-get install node
+      - run: sudo apt-get install node
       - run: composer install
       - run: php artisan serve &
       - run: cd garden; npm install
