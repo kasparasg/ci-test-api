@@ -1,0 +1,7 @@
+{
+  "host": "http://localhost:8000",
+  "webdriver": {
+    "server_host": "localhost",
+    "server_port": 4444
+  }
+}

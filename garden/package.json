@@ -1,0 +1,11 @@
+{
+  "name": "ci-test-api",
+  "main": "garden.js",
+  "dependencies": {
+    "plus.garden": "0.0.25",
+    "plus.garden.api": "0.1.1",
+    "chai": "^3.5.0",
+    "bson": "0.4.23"
+  },
+  "devDependencies": {}
+}
