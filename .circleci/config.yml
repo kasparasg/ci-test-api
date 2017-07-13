@@ -17,7 +17,7 @@ jobs:
     steps:
       - checkout
       - run: composer install
-      - run: php artisan serve
+      - run: php artisan serve &
       - run: cd garden; npm install
       - run : cd garden; ./garden.js test
 
