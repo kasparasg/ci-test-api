@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: notnoopci/php:7.1.5-browsers
-    working_directory: ~/repo
+    working_directory: ~/ci-test-api
     steps:
       - checkout
       - run: composer self-update
@@ -11,10 +11,19 @@ jobs:
           keys:
           - v1-dependencies-{{ checksum "composer.json" }}
           - v1-dependencies-
-
       - run: composer install -n --prefer-dist
       - save_cache:
           paths:
             - ./vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
+  test:
+    steps:
       - run: ./vendor/bin/phpunit
+
+  workflows:
+    version: 2
+    build_and_test:
+      jobs:
+        - build
+        - test:
+            requires: build
