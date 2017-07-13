@@ -19,6 +19,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths: .
+
   test:
     docker:
       - image: notnoopci/php:7.1.5-browsers
@@ -27,6 +28,21 @@ jobs:
       - attach_workspace:
           at: ~/ci-test-api
       - run: ./vendor/bin/phpunit
+
+  build_docker_image:
+    docker:
+      - image: notnoopci/php:7.1.5-browsers
+    working_directory: ~/ci-test-api
+    steps:
+      - run:
+          name: Install Docker Compose
+          command: |
+            set -x
+            curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+      - setup_remote_docker
+      - run: docker-compose build
+
   deploy:
     docker:
       - image: notnoopci/php:7.1.5-browsers
@@ -41,10 +57,13 @@ workflows:
       - test:
           requires:
             - build
+      - build_docker_image:
+          requires:
+            - test
       - hold:
           type: approval
           requires:
-            - test
+            - build_docker_image
       - deploy:
           requires:
             - hold
