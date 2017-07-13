@@ -12,11 +12,9 @@ jobs:
   test_e2e:
     docker:
       - image: notnoopci/php:7.1.5-browsers
-      - image: circleci/node:4
     working_directory: ~/ci-test-api
     steps:
-      - run: sudo npm install -g npm@latest
-      - checkout
+      - run: apt-get install node
       - run: composer install
       - run: php artisan serve &
       - run: cd garden; npm install
