@@ -19,7 +19,9 @@ jobs:
       - run: curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
       - run: sudo apt-get install -y nodejs
       - run: composer install
-      - run: php artisan serve &
+      - run:
+          command: php artisan serve
+          background: true
       - run: cd garden; npm install
       - run : cd garden; ./garden.js test
 
