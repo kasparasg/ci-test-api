@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  ci-test-api:
+    container_name: ci-test-api
+    build:
+      context: .
+    ports:
+      - 8000:80
