@@ -17,6 +17,9 @@ jobs:
             - ./vendor
           key: v1-dependencies-{{ checksum "composer.json" }}
   test:
+    working_directory: ~/ci-test-api
+    docker:
+      - image: notnoopci/php:7.1.5-browsers
     steps:
       - run: ./vendor/bin/phpunit
 
