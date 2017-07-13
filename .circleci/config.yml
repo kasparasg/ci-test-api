@@ -15,7 +15,8 @@ jobs:
     working_directory: ~/ci-test-api
     steps:
       - checkout
-      - run: sudo apt-get install node
+      - run: curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+      - run: sudo apt-get install -y nodejs
       - run: composer install
       - run: php artisan serve &
       - run: cd garden; npm install
