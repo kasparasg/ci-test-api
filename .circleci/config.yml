@@ -23,7 +23,7 @@ jobs:
           command: php artisan serve
           background: true
       - run: cd garden; npm install
-      - run : cd garden; ./garden.js test
+      - run: cd garden; ./garden.js test
 
   deploy:
     docker:
