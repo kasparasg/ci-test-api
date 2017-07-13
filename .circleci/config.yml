@@ -1,33 +1,24 @@
 version: 2
 jobs:
-  build:
+  test_unit:
     docker:
       - image: notnoopci/php:7.1.5-browsers
     working_directory: ~/ci-test-api
     steps:
       - checkout
-      - run: composer self-update
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "composer.json" }}
-          - v1-dependencies-
-      - run: composer install -n --prefer-dist
-      - save_cache:
-          paths:
-            - ./vendor
-          key: v1-dependencies-{{ checksum "composer.json" }}
-      - persist_to_workspace:
-          root: .
-          paths: .
+      - run: composer install
+      - run: ./vendor/bin/phpunit
 
-  test:
+  test_e2e:
     docker:
       - image: notnoopci/php:7.1.5-browsers
+      - image: circleci/node:4
     working_directory: ~/ci-test-api
     steps:
-      - attach_workspace:
-          at: ~/ci-test-api
-      - run: ./vendor/bin/phpunit
+      - run: composer install
+      - run: php artisan serve
+      - run: cd garden; npm install
+      - run : cd garden; ./garden.js test
 
   deploy:
     docker:
@@ -39,13 +30,12 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
+      - test_unit
+      - test_e2e
       - deploy:
           requires:
-            - test
+            - test_unit
+            - test_e2e
           filters:
             branches:
               only: master
