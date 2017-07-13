@@ -27,6 +27,11 @@ jobs:
       - attach_workspace:
           at: ~/ci-test-api
       - run: ./vendor/bin/phpunit
+  deploy:
+    docker:
+      - image: notnoopci/php:7.1.5-browsers
+    steps:
+      - run: echo "Deploying..."
 
 workflows:
   version: 2
@@ -36,3 +41,10 @@ workflows:
       - test:
           requires:
             - build
+      - hold:
+          type: approval
+          requires:
+            - test
+      - deploy:
+          requires:
+            - hold
