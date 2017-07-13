@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/ci-test-api
+    docker:
+      - image: circleci/php:7
+    steps:
+      - checkout
+      - run: composer install
+      - save_cache
+      - run: phpunit
