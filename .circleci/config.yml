@@ -12,7 +12,7 @@ jobs:
           command: |
             set -x
             docker-compose up -d
-            docker exec /app/src/vendor/bin/phpunit
+            docker exec ci-test-api /app/src/vendor/bin/phpunit
       - run:
           name: Build and Push
           command: |
