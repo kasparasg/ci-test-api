@@ -21,6 +21,9 @@ jobs:
             docker build -t kyrilrevels/test-docker-repo:$TAG .
             docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD 
             docker push kyrilrevels/test-docker-repo:$TAG
+      - add_ssh_keys:
+          fingerprints:
+            - "b4:94:91:c2:15:76:29:91:e4:88:ff:0b:79:93:97:7e"
       - deploy:
           name: Deploy to host
           command: |
