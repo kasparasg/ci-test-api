@@ -21,16 +21,14 @@ jobs:
             docker build -t kyrilrevels/test-docker-repo:$TAG .
             docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD 
             docker push kyrilrevels/test-docker-repo:$TAG
-      - add_ssh_keys:
-          fingerprints:
-            - "b4:94:91:c2:15:76:29:91:e4:88:ff:0b:79:93:97:7e"
+      - add_ssh_keys
       - deploy:
           name: Deploy to host
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              ssh $DEPLOY_USER@$DEPLOY_HOST "docker pull kyrilrevels/test-docker-repo:${TAG}"
-              ssh $DEPLOY_USER@$DEPLOY_HOST "docker stop ${CONTAINER_NAME} && docker rm ${CONTAINER_NAME}"
-              ssh $DEPLOY_USER@$DEPLOY_HOST "docker run -d --restart-always --name ${CONTAINER_NAME} -p 80:80 kyrilrevels/test-docker-repo:${TAG}"
+              ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker pull kyrilrevels/test-docker-repo:${TAG}"
+              ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker stop ${CONTAINER_NAME} && docker rm ${CONTAINER_NAME}"
+              ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker run -d --restart-always --name ${CONTAINER_NAME} -p 80:80 kyrilrevels/test-docker-repo:${TAG}"
             fi
           
 
