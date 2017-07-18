@@ -28,8 +28,6 @@ jobs:
             TAG="0.1.${CIRCLE_BUILD_NUM}"
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker pull kyrilrevels/test-docker-repo:${TAG}"
-              ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker stop $(docker ps -a -q)"
-              ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker rm $(docker ps -a -q)"
               ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker run -d --restart-always --name ${CONTAINER_NAME} -p 80:80 kyrilrevels/test-docker-repo:${TAG}"
             fi
           
