@@ -25,7 +25,6 @@ jobs:
       - deploy:
           name: Deploy to host
           command: |
-            set -x
             TAG="0.1.${CIRCLE_BUILD_NUM}"
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker pull kyrilrevels/test-docker-repo:${TAG}"
