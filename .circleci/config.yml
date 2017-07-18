@@ -30,6 +30,6 @@ jobs:
               ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker pull kyrilrevels/test-docker-repo:${TAG}"
               ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker run -d --name ${CONTAINER_NAME} -p 80:80 kyrilrevels/test-docker-repo:${TAG}"
             fi
-          
-
-
+deployment:
+  release_from_tag:
+    tag: /v(\d+)\.(\d+)/
