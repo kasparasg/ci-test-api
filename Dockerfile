@@ -19,6 +19,8 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 RUN php composer.phar install
 
+RUN ./artisan key:generate
+
 ENTRYPOINT ["./artisan"]
 
 CMD ["serve", "--host=0.0.0.0", "--port=80"]
