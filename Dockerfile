@@ -19,7 +19,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 RUN php composer.phar install
 
-RUN ./artisan key:generate
+RUN touch .env && ./artisan key:generate
 
 ENTRYPOINT ["./artisan"]
 
