@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: notnoopci/php:7.1.5-browsers
+    working_directory: ~/ci-test-api
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Test
+          command: |
+            set -x
+            docker-compose up -d
+            docker exec ci-test-api /app/src/vendor/bin/phpunit
+      - run:
+          name: Build and Push
+          command: |
+            set -x
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            docker build -t kyrilrevels/test-docker-repo:$TAG .
+            docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD 
+            docker push kyrilrevels/test-docker-repo:$TAG
+      - add_ssh_keys
+      - deploy:
+          name: Deploy to host
+          command: |
+            TAG="0.1.${CIRCLE_BUILD_NUM}"
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker stop ${CONTAINER_NAME} && docker rm ${CONTAINER_NAME}"
+              ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker pull kyrilrevels/test-docker-repo:${TAG}"
+              ssh -oStrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST "docker run -d --name ${CONTAINER_NAME} -p 80:80 kyrilrevels/test-docker-repo:${TAG}"
+            fi
+deployment:
+  release_from_tag:
+    tag: /(\d+)\.(\d+)\.(\d+)/
