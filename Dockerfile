@@ -19,7 +19,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 RUN php composer.phar install
 
-ENV APP_KEY=803zJnMk/RynWwSGn1dUJqQwh5+buVHXepmTuwtoe8g=
+ENV APP_KEY="base64:zbLyt24EjUyU5vcMvjjfa8iTHPIF1qXrGFvCQmimrZg="
 
 ENTRYPOINT ["./artisan"]
 
